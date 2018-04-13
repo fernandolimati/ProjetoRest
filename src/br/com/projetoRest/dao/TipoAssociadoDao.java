@@ -31,7 +31,7 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
 		return idGerado;
     }
 	@Override
-    public void atualizar(EntidadeTipoAssociado tipo) throws SQLException {
+    public int atualizar(EntidadeTipoAssociado tipo) throws SQLException {
 
         String sql = "UPDATE tipoassociado SET"
                 + " descricao=?, valormensalidade=?"
@@ -44,11 +44,11 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
         prd.setDouble(2, tipo.getValorMensalidade());
         prd.setInt(3, tipo.getCodigo());
 
-        prd.execute();
+        return prd.executeUpdate();
 
     }
 	@Override
-    public void excluir(int codigo) throws SQLException {
+    public int excluir(int codigo) throws SQLException {
         String sql = "DELETE FROM tipoassociado "
                 + "WHERE codigo=?;";
 
@@ -57,7 +57,7 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
 
         prd.setInt(1, codigo);
 
-        prd.execute();
+        return prd.executeUpdate();
 
     }
 	

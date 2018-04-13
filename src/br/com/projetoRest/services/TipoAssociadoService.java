@@ -29,7 +29,7 @@ public class TipoAssociadoService {
 	@GET
 	@Path("/list")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<EntidadeTipoAssociado> listarNotas() {
+	public List<EntidadeTipoAssociado> listar() {
 		List<EntidadeTipoAssociado> lista = null;
 		try {
 			lista = tipoAssociadoDAO.listar();
