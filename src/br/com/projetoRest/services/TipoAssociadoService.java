@@ -27,14 +27,14 @@ public class TipoAssociadoService {
 	
 	@Seguro({NivelPermissao.NIVEL_1})
 	@GET
-	@Path("/list")
+	@Path("/listar")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public List<EntidadeTipoAssociado> listar() {
 		List<EntidadeTipoAssociado> lista = null;
 		try {
 			lista = tipoAssociadoDAO.listar();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return lista;
 	}
@@ -49,14 +49,14 @@ public class TipoAssociadoService {
 		try {
 			obj = tipoAssociadoDAO.consultar(idNota);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return obj;
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
 	@POST
-	@Path("/add")
+	@Path("/adicionar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
 	public int adicionar(EntidadeTipoAssociado obj) {
@@ -64,8 +64,41 @@ public class TipoAssociadoService {
 		try {
 			idGerado = tipoAssociadoDAO.incluir(obj);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		return idGerado;
 	}
+	
+	@Seguro({NivelPermissao.NIVEL_1})
+	@POST
+	@Path("/atualizar")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.TEXT_PLAIN)
+	public int atualizar(EntidadeTipoAssociado obj) {
+		int res = 0;
+		try {
+			res = tipoAssociadoDAO.atualizar(obj);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return res;
+	}
+	
+	@Seguro({NivelPermissao.NIVEL_1})
+	@GET
+	@Path("/remover/{id}")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)
+	public int removerPorId(@PathParam("id") int idNota) {
+		int obj = 0;
+		try {
+			obj = tipoAssociadoDAO.excluir(idNota);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return obj;
+	}
+	
+	
 	
 }

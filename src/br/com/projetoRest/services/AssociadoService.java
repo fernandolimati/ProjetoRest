@@ -34,7 +34,7 @@ public class AssociadoService {
 		try {
 			lista = associadoDAO.listar();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return lista;
 	}
@@ -49,7 +49,7 @@ public class AssociadoService {
 		try {
 			obj = associadoDAO.consultar(idAssociado);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return obj;
 	}
@@ -64,8 +64,26 @@ public class AssociadoService {
 		try {
 			idGerado = associadoDAO.incluir(obj);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		return idGerado;
+	}
+	
+	@Seguro({NivelPermissao.NIVEL_1})
+	@POST
+	@Path("/atualizar")
+	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
+	@Produces(MediaType.TEXT_PLAIN)
+	public int atualizar(EntidadeAssociado obj) {
+		int resultado = 0;
+		if(obj.getCodigo() >0) {
+			try {
+				resultado = associadoDAO.atualizar(obj);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return resultado;
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -78,7 +96,7 @@ public class AssociadoService {
 		try {
 			resp = associadoDAO.excluir(idAssociado);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return resp;
 	}
