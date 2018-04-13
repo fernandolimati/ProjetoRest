@@ -11,8 +11,9 @@ import br.com.projetoRest.entidade.EntidadeTipoAssociado;
 import br.com.projetoRest.util.Conexao;
 
 
-public class TipoAssociadoDao {
+public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
 
+	@Override
     public int incluir(EntidadeTipoAssociado tipo) throws SQLException {
     	int idGerado = 0;
         String sql = "INSERT INTO tipoassociado (descricao, valormensalidade)"
@@ -29,7 +30,7 @@ public class TipoAssociadoDao {
 		
 		return idGerado;
     }
-
+	@Override
     public void atualizar(EntidadeTipoAssociado tipo) throws SQLException {
 
         String sql = "UPDATE tipoassociado SET"
@@ -46,7 +47,7 @@ public class TipoAssociadoDao {
         prd.execute();
 
     }
-
+	@Override
     public void excluir(int codigo) throws SQLException {
         String sql = "DELETE FROM tipoassociado "
                 + "WHERE codigo=?;";
@@ -59,8 +60,9 @@ public class TipoAssociadoDao {
         prd.execute();
 
     }
-
-    public EntidadeTipoAssociado consultar(int codigo) throws SQLException {
+	
+	@Override
+	public EntidadeTipoAssociado consultar(int codigo) throws SQLException {
         String sql = "SELECT tb.codigo, tb.descricao, tb.valorMensalidade "
                 + " FROM tipoassociado tb "
                 + " WHERE tb.codigo=?";
@@ -80,7 +82,7 @@ public class TipoAssociadoDao {
         return tipo;
 
     }
-
+	@Override
     public ArrayList<EntidadeTipoAssociado> listar() throws SQLException {
         String sql = "SELECT tb.codigo, tb.descricao, tb.valorMensalidade "
                 + " FROM tipoassociado tb ORDER BY tb.codigo";

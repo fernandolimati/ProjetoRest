@@ -32,8 +32,8 @@ public class LoginService {
 			Gson gson = new Gson();
 			Credencial crendencial = gson.fromJson(crendenciaisJson, Credencial.class);
 			validarCrendenciais(crendencial);
-			String token = gerarToken(crendencial.getLogin(),1);//Se a crendencial gera o token e passa a quanidade de dias que o token vai ser valido no caso 1 dia
-			return Response.ok(token).build();//Retorna um reponse com o status 200 OK com o token gerado
+			String token = gerarToken(crendencial.getLogin(),1);
+			return Response.ok(token).build();
 		} catch (Exception e) {
 			//e.printStackTrace();
 			return Response.status(Status.UNAUTHORIZED).build();
@@ -49,41 +49,31 @@ public class LoginService {
 		}
 
 	}
-	private  String gerarToken(String login,Integer expiraEmDias ){
+	private String gerarToken(String login,Integer expiraEmDias ){
 		SignatureAlgorithm algoritimoAssinatura = SignatureAlgorithm.HS512;
 		Date agora = new Date();
 		Calendar expira = Calendar.getInstance();
 		expira.add(Calendar.DAY_OF_MONTH, expiraEmDias);
 		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(FRASE_SEGREDO);
 		SecretKeySpec key = new SecretKeySpec(apiKeySecretBytes, algoritimoAssinatura.getJcaName());
-		//E finalmente utiliza o JWT builder pra gerar o token
 		JwtBuilder construtor = Jwts.builder()
-				.setIssuedAt(agora)//Data que o token foi gerado
-				.setIssuer(login)//Coloca o login do usuario mais podia qualquer outra informação
-				.signWith(algoritimoAssinatura, key)//coloca o algoritimo de assinatura e frase segredo ja encodada
-				.setExpiration(expira.getTime());// coloca até que data que o token é valido
+				.setIssuedAt(agora)
+				.setIssuer(login)
+				.signWith(algoritimoAssinatura, key)
+				.setExpiration(expira.getTime());
 
-		return construtor.compact();//Constroi o token retorando a string dele
+		return construtor.compact();
 	}
 
 	public  Claims validaToken(String token) {
 		try{
-			//JJWT vai validar o token caso o token não seja valido ele vai executar uma exeption
-			//o JJWT usa a frase segredo pra descodificar o token e ficando assim possivel
-			//recuperar as informações que colocamos no payload
 			 Claims claims = Jwts.parser()         
 					.setSigningKey(DatatypeConverter.parseBase64Binary(FRASE_SEGREDO))
 					.parseClaimsJws(token).getBody();
-			 //Aqui é um exemplo que se o token for valido e descodificado 
-			 //vai imprimir o login que foi colocamos no token
 			 return claims;
 		}catch(Exception ex){
 			throw ex;
 		}
 	}
-
-	//Metodo simples como não usamos banco de dados e foco é o parte autenticação
-	//o metodo retorna somente um nivel de acesso, mas em uma aplicação normal
-	//aqui seria feitor a verficação de que niveis de permissao o usuario tem e retornar eles
 	public NivelPermissao buscarNivelPermissao(String login) {return NivelPermissao.NIVEL_1;}
 }

@@ -1,16 +1,21 @@
 package br.com.projetoRest.entidade;
 
-/**
- *
- * @author savio
- */
 public class EntidadeTipoAssociado {
 
     private int codigo;
     private String descricao;
     private Double valorMensalidade;
 
-    public int getCodigo() {
+    public EntidadeTipoAssociado() {}
+    
+    public EntidadeTipoAssociado(int codigo, String descricao, Double valorMensalidade) {
+		super();
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.valorMensalidade = valorMensalidade;
+	}
+
+	public int getCodigo() {
         return codigo;
     }
 

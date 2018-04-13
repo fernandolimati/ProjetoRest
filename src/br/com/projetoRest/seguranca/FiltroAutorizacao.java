@@ -30,22 +30,14 @@ public class FiltroAutorizacao implements ContainerRequestFilter {
 	private ResourceInfo resourceInfo;
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		// Pega a classe que contem URL requisitada E extrai os nivel de permissão dela
 		Class<?> classe = resourceInfo.getResourceClass();
 		List<NivelPermissao> nivelPermissaoClasse = extrairNivelPermissao(classe);
 
-		// Pega o metodo que contem URL requisitada 
-		// E extrai os nivel de permissão dele
 		Method metodo = resourceInfo.getResourceMethod();
 		List<NivelPermissao> nivelPermisaoMetodo = extrairNivelPermissao(metodo);
 
 		try {
-			//Como modificamos o securityContext na hora de validar o token, para podemos pegar
-			//O login do usuario, para fazer a verificação se ele tem o nivel de permissao necessario
-			//para esse endpoint
 			String login = requestContext.getSecurityContext().getUserPrincipal().getName();
-			// Verifica se o usuario tem permissão pra executar esse metodo
-			// Os niveis de acesso do metodo sobrepoe o da classe
 			if (nivelPermisaoMetodo.isEmpty()) {
 				checarPermissoes(nivelPermissaoClasse,login);
 			} else {
@@ -53,13 +45,10 @@ public class FiltroAutorizacao implements ContainerRequestFilter {
 			}
 
 		} catch (Exception e) {
-			//Se caso o usuario não possui permissao é dado um execption, 
-			//e retorna um resposta com o status 403 FORBIDDEN 
 			requestContext.abortWith(
 					Response.status(Response.Status.FORBIDDEN).build());
 		}
 	}
-	//Metodo que extrai os niveis de permissao que foram definidos no @Seguro
 	private List<NivelPermissao> extrairNivelPermissao(AnnotatedElement annotatedElement) {
 		if (annotatedElement == null) {
 			return new ArrayList<NivelPermissao>();
@@ -73,15 +62,12 @@ public class FiltroAutorizacao implements ContainerRequestFilter {
 			}
 		}
 	}
-	//Verifica se o usuario tem permissao pra executar o metodo, se não for definido nenhum nivel de acesso no @Seguro,
-	//Entao todos vao poder executar desde que possuam um token valido
 	private void checarPermissoes(List<NivelPermissao> nivelPermissaoPermitidos,String login) throws Exception {
 		try {
 			if(nivelPermissaoPermitidos.isEmpty())
 				return;
 			
 			boolean temPermissao = false;
-			//Busca quais os niveis de acesso o usuario tem.
 			NivelPermissao nivelPermissaoUsuario = new LoginService().buscarNivelPermissao(login);
 			
 			for (NivelPermissao nivelPermissao : nivelPermissaoPermitidos) {
@@ -96,7 +82,7 @@ public class FiltroAutorizacao implements ContainerRequestFilter {
 				throw new Exception("Cliente não possui o nível de permissão para esse método");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 	}

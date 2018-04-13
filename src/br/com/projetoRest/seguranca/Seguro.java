@@ -9,7 +9,6 @@ import javax.ws.rs.NameBinding;
 
 import br.com.projetoRest.model.NivelPermissao;
 
-
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE,ElementType.METHOD})
