@@ -44,10 +44,10 @@ public class TipoAssociadoService {
 	@Path("/buscar/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public EntidadeTipoAssociado buscarPorId(@PathParam("id") int idNota) {
+	public EntidadeTipoAssociado buscarPorId(@PathParam("id") int id) {
 		EntidadeTipoAssociado obj = null;
 		try {
-			obj = tipoAssociadoDAO.consultar(idNota);
+			obj = tipoAssociadoDAO.consultar(id);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -89,10 +89,10 @@ public class TipoAssociadoService {
 	@Path("/remover/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int removerPorId(@PathParam("id") int idNota) {
+	public int removerPorId(@PathParam("id") int id) {
 		int obj = 0;
 		try {
-			obj = tipoAssociadoDAO.excluir(idNota);
+			obj = tipoAssociadoDAO.excluir(id);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
