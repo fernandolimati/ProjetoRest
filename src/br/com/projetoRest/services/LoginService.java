@@ -35,7 +35,6 @@ public class LoginService {
 			String token = gerarToken(crendencial.getLogin(),1);
 			return Response.ok(token).build();
 		} catch (Exception e) {
-			//e.printStackTrace();
 			return Response.status(Status.UNAUTHORIZED).build();
 		}
 	}
@@ -49,7 +48,7 @@ public class LoginService {
 		}
 
 	}
-	private String gerarToken(String login,Integer expiraEmDias ){
+	private String gerarToken(String login,Integer expiraEmDias){
 		SignatureAlgorithm algoritimoAssinatura = SignatureAlgorithm.HS512;
 		Date agora = new Date();
 		Calendar expira = Calendar.getInstance();

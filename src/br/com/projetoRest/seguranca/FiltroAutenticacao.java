@@ -26,17 +26,16 @@ public class FiltroAutenticacao implements ContainerRequestFilter{
 		
 		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-			throw new NotAuthorizedException("Authorization header precisa ser provido");
+			throw new NotAuthorizedException("Authorization header precisa ser provido para efetuar a transação.");
 		}
 		String token = authorizationHeader.substring("Bearer".length()).trim();
 
 		try {
 			Claims claims = new LoginService().validaToken(token);
 			if(claims==null)
-				throw new Exception("Token invÃ¡lido");
+				throw new Exception("Token inválido.");
 			modificarRequestContext(requestContext,claims.getId());
 		} catch (Exception e) {
-			//e.printStackTrace();
 			requestContext.abortWith(
 					Response.status(Response.Status.UNAUTHORIZED).build());
 		}

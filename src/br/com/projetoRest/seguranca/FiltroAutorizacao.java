@@ -79,10 +79,9 @@ public class FiltroAutorizacao implements ContainerRequestFilter {
 			}
 			
 			if(!temPermissao)
-				throw new Exception("Cliente n√£o possui o n√≠vel de permiss√£o para esse m√©todo");
+				throw new Exception("Cliente n√o possui o nivel de permiss„o para consumir esse serviÁo.");
 			
 		} catch (Exception e) {
-			//e.printStackTrace();
 			throw e;
 		}
 	}
