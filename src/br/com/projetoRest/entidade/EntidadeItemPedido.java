@@ -25,7 +25,10 @@ public class EntidadeItemPedido {
 		this.produto = produto;
 		this.pedido = pedido;
 	}
-	public EntidadeItemPedido() {}
+	public EntidadeItemPedido() {
+		this.produto = null;
+		this.pedido = null;
+	}
 	
 	public int getId() {
 		return id;
