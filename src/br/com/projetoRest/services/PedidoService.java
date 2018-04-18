@@ -1,6 +1,5 @@
 package br.com.projetoRest.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,13 +33,12 @@ public class PedidoService {
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	public Response listar() {
 		List<EntidadePedido> lista = null;
-		Gson teste = new Gson();
 		String saida="";
 		try {
 			lista = pedidoDao.listar();
-			saida = teste.toJson(lista);
+			saida = new Gson().toJson(lista);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
 		return Response.status(201).entity(saida).build();
 	}
@@ -50,14 +48,16 @@ public class PedidoService {
 	@Path("/buscar/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public EntidadePedido buscarPorId(@PathParam("id") int id) {
+	public Response buscarPorId(@PathParam("id") int id) {
 		EntidadePedido obj = null;
+		String saida="";
 		try {
 			obj = pedidoDao.consultar(id);
+			saida = new Gson().toJson(obj);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return obj;
+		return Response.status(201).entity(saida).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -65,14 +65,14 @@ public class PedidoService {
 	@Path("/adicionar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int adicionar(EntidadePedido obj) {
+	public Response adicionar(EntidadePedido obj) {
 		int idGerado = 0;
 		try {
 			idGerado = pedidoDao.incluir(obj);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return idGerado;
+		return Response.status(201).entity(idGerado).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -80,14 +80,14 @@ public class PedidoService {
 	@Path("/atualizar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int atualizar(EntidadePedido obj) {
+	public Response atualizar(EntidadePedido obj) {
 		int res = 0;
 		try {
 			res = pedidoDao.atualizar(obj);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return res;
+		return Response.status(201).entity(res).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -95,13 +95,13 @@ public class PedidoService {
 	@Path("/remover/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int removerPorId(@PathParam("id") int id) {
+	public Response removerPorId(@PathParam("id") int id) {
 		int obj = 0;
 		try {
 			obj = pedidoDao.excluir(id);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return obj;
+		return Response.status(201).entity(obj).build();
 	}
 }

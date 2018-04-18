@@ -87,6 +87,7 @@ public class ItemPedidoDao implements ItemPedidoInterface {
             tipo.setProduto(new EntidadeProduto(rs.getInt("produto_id"), rs.getString("nomeproduto"), rs.getDouble("valorvenda")));
             lista.add(tipo);
         }
+        System.out.println(lista.size());
         return lista;
 	}
 

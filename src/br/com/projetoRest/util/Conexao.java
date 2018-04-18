@@ -19,17 +19,15 @@ public class Conexao {
         return conexao;
     }
     
-    private static Connection conectar() throws ClassNotFoundException, SQLException{
+    private static Connection conectar() throws Exception{
         try {
             Class.forName("org.postgresql.Driver");
         return DriverManager.getConnection("jdbc:postgresql://fernandolimati.com.br:8080/clube201801","postgres","F#240924s");
     
         }catch (ClassNotFoundException e) {
-            //System.out.println("Não foi encontrado a biblioteca postgres! ");
-                
+        	throw new Exception("Nao foi encontrado a biblioteca postgres.");
         }catch (SQLException e){
-            //System.out.print("Banco/Usuario/Senha estaão erradas");
+        	throw new Exception("Banco/Usuario/Senha estaão erradas.");
         }
-        return null;
     }
 }

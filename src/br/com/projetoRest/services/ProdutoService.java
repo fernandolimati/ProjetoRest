@@ -10,6 +10,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.google.gson.Gson;
 
 import br.com.projetoRest.dao.ProdutoDao;
 import br.com.projetoRest.entidade.EntidadeProduto;
@@ -29,14 +32,16 @@ public class ProdutoService {
 	@GET
 	@Path("/listar")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<EntidadeProduto> listar() {
+	public Response listar() {
 		List<EntidadeProduto> lista = null;
+		String saida = "";
 		try {
 			lista = produtoDao.listar();
+			saida = new Gson().toJson(lista);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return lista;
+		return Response.status(201).entity(saida).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -44,14 +49,16 @@ public class ProdutoService {
 	@Path("/buscar/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public EntidadeProduto buscarPorId(@PathParam("id") int id) {
+	public Response buscarPorId(@PathParam("id") int id) {
 		EntidadeProduto obj = null;
+		String saida = "";
 		try {
 			obj = produtoDao.consultar(id);
+			saida = new Gson().toJson(obj);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return obj;
+		return Response.status(201).entity(saida).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -59,14 +66,14 @@ public class ProdutoService {
 	@Path("/adicionar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int adicionar(EntidadeProduto obj) {
+	public Response adicionar(EntidadeProduto obj) {
 		int idGerado = 0;
 		try {
 			idGerado = produtoDao.incluir(obj);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return idGerado;
+		return Response.status(201).entity(idGerado).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -74,14 +81,14 @@ public class ProdutoService {
 	@Path("/atualizar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int atualizar(EntidadeProduto obj) {
+	public Response atualizar(EntidadeProduto obj) {
 		int res = 0;
 		try {
 			res = produtoDao.atualizar(obj);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return res;
+		return Response.status(201).entity(res).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
@@ -89,13 +96,13 @@ public class ProdutoService {
 	@Path("/remover/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
-	public int removerPorId(@PathParam("id") int id) {
+	public Response removerPorId(@PathParam("id") int id) {
 		int obj = 0;
 		try {
 			obj = produtoDao.excluir(id);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return obj;
+		return Response.status(201).entity(obj).build();
 	}
 }
