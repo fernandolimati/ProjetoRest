@@ -24,8 +24,8 @@ public class ItemPedidoDao implements ItemPedidoInterface {
         Connection cnn = Conexao.getConexao();
         PreparedStatement prd = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-        prd.setDouble(1, tipo.getPrecoMomento());
-        prd.setInt(2, tipo.getQuantidade());
+        prd.setDouble(1, tipo.getPrecoMomentoItemPedido());
+        prd.setInt(2, tipo.getQuantidadeItemPedido());
         prd.setInt(3, tipo.getProduto().getId());
         prd.setInt(4, tipo.getPedido().getId());
         prd.execute();
@@ -43,11 +43,11 @@ public class ItemPedidoDao implements ItemPedidoInterface {
         Connection cnn = Conexao.getConexao();
         PreparedStatement prd = cnn.prepareStatement(sql);
 
-        prd.setDouble(1, tipo.getPrecoMomento());
-        prd.setInt(2, tipo.getQuantidade());
+        prd.setDouble(1, tipo.getPrecoMomentoItemPedido());
+        prd.setInt(2, tipo.getQuantidadeItemPedido());
         prd.setInt(3, tipo.getProduto().getId());
         prd.setInt(4, tipo.getPedido().getId());
-        prd.setInt(4, tipo.getId());
+        prd.setInt(4, tipo.getIdItemPedido());
         
         return prd.executeUpdate();
 	}
@@ -65,34 +65,31 @@ public class ItemPedidoDao implements ItemPedidoInterface {
 	}
 
 	@Override
-	public ArrayList<EntidadeItemPedido> consultar(int codigo) throws SQLException {
+	public ArrayList<EntidadeItemPedido> consultar(int codigo) throws Exception {
 		String sql = "SELECT * FROM view_itempedido WHERE pedido_id = ?;";
-
         Connection cnn = Conexao.getConexao();
         PreparedStatement prd = cnn.prepareStatement(sql);
         prd.setInt(1, codigo);
         ResultSet rs = prd.executeQuery();
         
-
-        EntidadeItemPedido tipo = new EntidadeItemPedido();
         ArrayList<EntidadeItemPedido> lista = new ArrayList<EntidadeItemPedido>();
 
         while (rs.next()) {
-            tipo.setId(rs.getInt("itempedido_id"));
-            tipo.setPrecoMomento(rs.getDouble("precomomento"));
-            tipo.setQuantidade(rs.getInt("quantidade"));
+        	EntidadeItemPedido tipo = new EntidadeItemPedido();
+            tipo.setIdItemPedido(rs.getInt("itempedido_id"));
+            tipo.setPrecoMomentoItemPedido(rs.getDouble("precomomento"));
+            tipo.setQuantidadeItemPedido(rs.getInt("quantidade"));
             EntidadeTipoAssociado tpAssociado = new EntidadeTipoAssociado(rs.getInt("tipoassociado_id"), rs.getString("descricao"), rs.getDouble("valormensalidade"));
             EntidadeAssociado associado = new EntidadeAssociado(rs.getInt("associado_id"), rs.getString("nome"), rs.getString("cpf"), rs.getString("endereco"), rs.getString("telefone"), tpAssociado);
             tipo.setPedido(new EntidadePedido(associado, rs.getDouble("valortotalpedido"), new DataHelper(rs.getString("datahorapedido"))));
             tipo.setProduto(new EntidadeProduto(rs.getInt("produto_id"), rs.getString("nomeproduto"), rs.getDouble("valorvenda")));
             lista.add(tipo);
         }
-        System.out.println(lista.size());
         return lista;
 	}
 
 	@Override
-	public ArrayList<EntidadeItemPedido> listar() throws SQLException {
+	public ArrayList<EntidadeItemPedido> listar() throws Exception {
 		String sql = "SELECT * FROM view_itempedido ORDER BY pedido_id;";
 
         Connection cnn = Conexao.getConexao();
@@ -102,9 +99,9 @@ public class ItemPedidoDao implements ItemPedidoInterface {
 
         while (rs.next()) {
         	EntidadeItemPedido tipo = new EntidadeItemPedido();
-        	tipo.setId(rs.getInt("itempedido_id"));
-            tipo.setPrecoMomento(rs.getDouble("precomomento"));
-            tipo.setQuantidade(rs.getInt("quantidade"));
+        	tipo.setIdItemPedido(rs.getInt("itempedido_id"));
+            tipo.setPrecoMomentoItemPedido(rs.getDouble("precomomento"));
+            tipo.setQuantidadeItemPedido(rs.getInt("quantidade"));
             EntidadeTipoAssociado tpAssociado = new EntidadeTipoAssociado(rs.getInt("tipoassociado_id"), rs.getString("descricao"), rs.getDouble("valormensalidade"));
             EntidadeAssociado associado = new EntidadeAssociado(rs.getInt("associado_id"), rs.getString("nome"), rs.getString("cpf"), rs.getString("endereco"), rs.getString("telefone"), tpAssociado);
             tipo.setPedido(new EntidadePedido(associado, rs.getDouble("valortotalpedido"), new DataHelper(rs.getString("datahorapedido"))));

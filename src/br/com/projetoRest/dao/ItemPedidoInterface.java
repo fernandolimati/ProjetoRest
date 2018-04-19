@@ -9,6 +9,6 @@ public interface ItemPedidoInterface {
 	public int incluir(EntidadeItemPedido tipo)throws SQLException;
     public int atualizar(EntidadeItemPedido tipo)throws SQLException;
     public int excluir(int codigo)throws SQLException;
-    public ArrayList<EntidadeItemPedido> consultar(int codigo)throws SQLException;
-    public ArrayList<EntidadeItemPedido> listar()throws SQLException;
+    public ArrayList<EntidadeItemPedido> consultar(int codigo)throws Exception;
+    public ArrayList<EntidadeItemPedido> listar()throws Exception;
 }

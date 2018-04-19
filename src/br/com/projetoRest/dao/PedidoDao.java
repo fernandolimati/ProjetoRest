@@ -14,7 +14,7 @@ import br.com.projetoRest.util.Conexao;
 import br.com.projetoRest.util.DataHelper;
 
 public class PedidoDao implements PedidoDaoInterface {
-
+	
 	@Override
 	public int incluir(EntidadePedido tipo) throws SQLException {
 		int idGerado = 0;
@@ -23,7 +23,7 @@ public class PedidoDao implements PedidoDaoInterface {
         PreparedStatement prd = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         prd.setDouble(1, tipo.getValorTotalPedido());
-        prd.setObject(2, tipo.getDataHoraPedido());
+        prd.setString(2, tipo.getDataHoraPedido().getDataString());
         prd.setInt(3, tipo.getAssociado().getCodigo());
         
         prd.execute();
@@ -42,7 +42,7 @@ public class PedidoDao implements PedidoDaoInterface {
         PreparedStatement prd = cnn.prepareStatement(sql);
 
         prd.setDouble(1, tipo.getValorTotalPedido());
-        prd.setObject(2, tipo.getDataHoraPedido());
+        prd.setString(2, tipo.getDataHoraPedido().getDataString());
         prd.setInt(3, tipo.getAssociado().getCodigo());
         prd.setInt(4, tipo.getId());
         
@@ -62,7 +62,7 @@ public class PedidoDao implements PedidoDaoInterface {
 	}
 
 	@Override
-	public EntidadePedido consultar(int codigo) throws SQLException {
+	public EntidadePedido consultar(int codigo) throws Exception {
 		String sql = "SELECT * FROM view_pedido WHERE pedido_id = ?;";
 
         Connection cnn = Conexao.getConexao();
@@ -83,7 +83,7 @@ public class PedidoDao implements PedidoDaoInterface {
 	}
 
 	@Override
-	public ArrayList<EntidadePedido> listar() throws SQLException {
+	public ArrayList<EntidadePedido> listar() throws Exception {
 		String sql = "SELECT * FROM view_pedido;";
 
         Connection cnn = Conexao.getConexao();

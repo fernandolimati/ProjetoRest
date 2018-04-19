@@ -9,6 +9,6 @@ public interface PedidoDaoInterface {
 	public int incluir(EntidadePedido tipo)throws SQLException;
     public int atualizar(EntidadePedido tipo)throws SQLException;
     public int excluir(int codigo)throws SQLException;
-    public EntidadePedido consultar(int codigo)throws SQLException;
-    public ArrayList<EntidadePedido> listar()throws SQLException;
+    public EntidadePedido consultar(int codigo)throws Exception;
+    public ArrayList<EntidadePedido> listar()throws Exception;
 }
