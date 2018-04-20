@@ -59,7 +59,8 @@ public class ItemPedidoService {
 		} catch (Exception e) {
 			return Response.status(500).entity(e.getMessage()).build();
 		}
-		return Response.status(201).entity(saida).build();
+		if(saida.length() > 1) return Response.status(202).entity(saida).build();
+		else return Response.status(201).entity(saida).build();
 	}
 	
 	@Seguro({NivelPermissao.NIVEL_1})
