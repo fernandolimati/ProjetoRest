@@ -30,6 +30,7 @@ public class AssociadoDao implements AssociadoDaoInterface{
         ResultSet rs = prd.getGeneratedKeys();
 		if (rs.next())idGerado = rs.getInt(1);
 		
+		cnn.close();
 		return idGerado;
 	}
 
@@ -48,7 +49,10 @@ public class AssociadoDao implements AssociadoDaoInterface{
         prd.setString(5, tipo.getCpf());
         prd.setInt   (6, tipo.getCodigo());
         
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        
+        cnn.close();
+        return saida;
 	}
 
 	@Override
@@ -60,7 +64,10 @@ public class AssociadoDao implements AssociadoDaoInterface{
 
         prd.setInt(1, codigo);
 
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        
+        cnn.close();
+        return saida;
 	}
 
 	@Override
@@ -83,6 +90,7 @@ public class AssociadoDao implements AssociadoDaoInterface{
             tipo.setTipoAssociado(new TipoAssociadoDao().consultar(rs.getInt("codigotipoassociado")));
             tipo.setCpf(rs.getString("cpf"));
         }
+        cnn.close();
         return tipo;
 	}
 
@@ -105,6 +113,7 @@ public class AssociadoDao implements AssociadoDaoInterface{
             tipo.setCpf(rs.getString("cpf"));
             lista.add(tipo);
         }
+        cnn.close();
         return lista;
 	}
 

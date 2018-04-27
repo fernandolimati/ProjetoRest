@@ -27,6 +27,7 @@ public class ProdutoDao implements ProdutoDaoInterface {
         ResultSet rs = prd.getGeneratedKeys();
 		if (rs.next())idGerado = rs.getInt(1);
 		
+		cnn.close();
 		return idGerado;
 	}
 
@@ -41,7 +42,10 @@ public class ProdutoDao implements ProdutoDaoInterface {
         prd.setDouble(2, tipo.getValorVenda());
         prd.setInt(3, tipo.getId());
         
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        cnn.close();
+        
+        return saida;
 	}
 
 	@Override
@@ -53,7 +57,10 @@ public class ProdutoDao implements ProdutoDaoInterface {
 
         prd.setInt(1, codigo);
 
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        cnn.close();
+        
+        return saida;
 	}
 
 	@Override
@@ -72,6 +79,7 @@ public class ProdutoDao implements ProdutoDaoInterface {
             tipo.setNomeProduto(rs.getString("nomeproduto"));
             tipo.setValorVenda(rs.getDouble("valorvenda"));
         }
+        cnn.close();
         return tipo;
 	}
 
@@ -91,6 +99,7 @@ public class ProdutoDao implements ProdutoDaoInterface {
             tipo.setValorVenda(rs.getDouble("valorvenda"));
             lista.add(tipo);
         }
+        cnn.close();
         return lista;
 	}
 

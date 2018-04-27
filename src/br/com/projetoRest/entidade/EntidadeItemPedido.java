@@ -5,6 +5,7 @@ public class EntidadeItemPedido {
 	private int idItemPedido;
 	private double precoMomentoItemPedido;
 	private int quantidadeItemPedido;
+	private StatusPersistenciaEnum flag;
 	private EntidadeProduto produto;
 	private EntidadePedido pedido;
 	
@@ -16,6 +17,7 @@ public class EntidadeItemPedido {
 		this.quantidadeItemPedido = quantidade;
 		this.produto = produto;
 		this.pedido = pedido;
+		this.flag = StatusPersistenciaEnum.NORMAL;
 	}
 	public EntidadeItemPedido(double precoMomento, int quantidade, EntidadeProduto produto,
 			EntidadePedido pedido) {
@@ -24,10 +26,12 @@ public class EntidadeItemPedido {
 		this.quantidadeItemPedido = quantidade;
 		this.produto = produto;
 		this.pedido = pedido;
+		this.flag = StatusPersistenciaEnum.NORMAL;
 	}
 	public EntidadeItemPedido() {
 		this.produto = null;
 		this.pedido = null;
+		this.flag = StatusPersistenciaEnum.NORMAL;
 	}
 		
 	public int getIdItemPedido() {
@@ -59,6 +63,14 @@ public class EntidadeItemPedido {
 	}
 	public void setPedido(EntidadePedido pedido) {
 		this.pedido = pedido;
-	};
+	}
+	public StatusPersistenciaEnum getFlag() {
+		return flag;
+	}
+	public void setFlag(StatusPersistenciaEnum flag) {
+		this.flag = flag;
+	}
+	
+	
 	
 }

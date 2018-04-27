@@ -11,6 +11,8 @@ import br.com.projetoRest.entidade.EntidadeTipoAssociado;
 import br.com.projetoRest.util.Conexao;
 
 
+
+
 public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
 
 	@Override
@@ -28,6 +30,8 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
         ResultSet rs = prd.getGeneratedKeys();
 		if (rs.next())idGerado = rs.getInt(1);
 		
+		cnn.close();
+		
 		return idGerado;
     }
 	@Override
@@ -44,7 +48,10 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
         prd.setDouble(2, tipo.getValorMensalidade());
         prd.setInt(3, tipo.getCodigo());
 
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        cnn.close();
+        
+        return saida;
 
     }
 	@Override
@@ -57,7 +64,10 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
 
         prd.setInt(1, codigo);
 
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        cnn.close();
+        
+        return saida;
 
     }
 	
@@ -79,6 +89,7 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
             tipo.setDescricao(rs.getString("descricao"));
             tipo.setValorMensalidade(rs.getDouble("valorMensalidade"));
         }
+        cnn.close();
         return tipo;
 
     }
@@ -99,6 +110,7 @@ public class TipoAssociadoDao implements TipoAssociadoDaoInterface{
             tipo.setValorMensalidade(rs.getDouble("valormensalidade"));
             lista.add(tipo);
         }
+        cnn.close();
         return lista;
 
     }

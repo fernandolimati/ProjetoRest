@@ -18,12 +18,25 @@ import br.com.projetoRest.util.DataHelper;
 public class ItemPedidoDao implements ItemPedidoInterface {
 
 	@Override
-	public int incluir(EntidadeItemPedido tipo) throws SQLException {
-		int idGerado = 0;
-        String sql = "INSERT INTO public.itempedido(precomomento, quantidade, idproduto, idpedido) VALUES (?, ?, ?, ?);";
-        Connection cnn = Conexao.getConexao();
-        PreparedStatement prd = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	public void incluir(EntidadeItemPedido tipo, Connection cnn) throws SQLException {
 
+		String sql = "INSERT INTO public.itempedido(precomomento, quantidade, idproduto, idpedido) VALUES (?, ?, ?, ?);";
+        PreparedStatement prd = cnn.prepareStatement(sql);
+        prd.setDouble(1, tipo.getPrecoMomentoItemPedido());
+        prd.setInt(2, tipo.getQuantidadeItemPedido());
+        prd.setInt(3, tipo.getProduto().getId());
+        prd.setInt(4, tipo.getPedido().getId());
+        prd.execute();
+        		
+	}
+	
+	@Override
+	public int incluir(EntidadeItemPedido tipo) throws SQLException {
+
+		String sql = "INSERT INTO public.itempedido(precomomento, quantidade, idproduto, idpedido) VALUES (?, ?, ?, ?);";
+		int idGerado = 0;
+		Connection cnn = Conexao.getConexao();
+		PreparedStatement prd = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         prd.setDouble(1, tipo.getPrecoMomentoItemPedido());
         prd.setInt(2, tipo.getQuantidadeItemPedido());
         prd.setInt(3, tipo.getProduto().getId());
@@ -32,6 +45,8 @@ public class ItemPedidoDao implements ItemPedidoInterface {
         
         ResultSet rs = prd.getGeneratedKeys();
 		if (rs.next())idGerado = rs.getInt(1);
+        
+		cnn.close();
 		
 		return idGerado;
 	}
@@ -49,7 +64,26 @@ public class ItemPedidoDao implements ItemPedidoInterface {
         prd.setInt(4, tipo.getPedido().getId());
         prd.setInt(4, tipo.getIdItemPedido());
         
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        cnn.close();
+        
+        return saida;
+	}
+	
+	@Override
+	public void atualizar(EntidadeItemPedido tipo, Connection cnn) throws SQLException {
+		String sql = "UPDATE public.itempedido SET precomomento=?, quantidade=?, idproduto=?, idpedido=? WHERE id=?;";
+
+        PreparedStatement prd = cnn.prepareStatement(sql);
+
+        prd.setDouble(1, tipo.getPrecoMomentoItemPedido());
+        prd.setInt(2, tipo.getQuantidadeItemPedido());
+        prd.setInt(3, tipo.getProduto().getId());
+        prd.setInt(4, tipo.getPedido().getId());
+        prd.setInt(4, tipo.getIdItemPedido());
+        
+        prd.execute();
+        
 	}
 
 	@Override
@@ -61,7 +95,26 @@ public class ItemPedidoDao implements ItemPedidoInterface {
 
         prd.setInt(1, codigo);
 
-        return prd.executeUpdate();
+        int saida = prd.executeUpdate();
+        cnn.close();
+        
+        return saida;
+	}
+	
+	@Override
+	public void excluirPorId(int id, Connection cnn) throws SQLException {
+		String sql = "DELETE FROM itempedido WHERE codigo=?;";
+        PreparedStatement prd = cnn.prepareStatement(sql);
+        prd.setInt(1, id);
+        prd.execute();
+	}
+	
+	@Override
+	public void excluirPorPedido(int codigoPedido, Connection cnn) throws SQLException {
+		String sql = "DELETE FROM itempedido WHERE idpedido=?;";
+        PreparedStatement prd = cnn.prepareStatement(sql);
+        prd.setInt(1, codigoPedido);
+        prd.execute();
 	}
 
 	@Override
@@ -85,6 +138,7 @@ public class ItemPedidoDao implements ItemPedidoInterface {
             tipo.setProduto(new EntidadeProduto(rs.getInt("produto_id"), rs.getString("nomeproduto"), rs.getDouble("valorvenda")));
             lista.add(tipo);
         }
+        cnn.close();
         return lista;
 	}
 
@@ -108,6 +162,7 @@ public class ItemPedidoDao implements ItemPedidoInterface {
             tipo.setProduto(new EntidadeProduto(rs.getInt("produto_id"), rs.getString("nomeproduto"), rs.getDouble("valorvenda")));
             lista.add(tipo);
         }
+        cnn.close();
         return lista;
 	}
 

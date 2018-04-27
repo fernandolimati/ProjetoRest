@@ -66,7 +66,7 @@ public class PedidoService {
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response adicionar(EntidadePedido obj) {
-		int idGerado = 0;
+		boolean idGerado;
 		try {
 			idGerado = pedidoDao.incluir(obj);
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class PedidoService {
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response atualizar(EntidadePedido obj) {
-		int res = 0;
+		boolean res = false;
 		try {
 			res = pedidoDao.atualizar(obj);
 		} catch (Exception e) {
@@ -96,7 +96,7 @@ public class PedidoService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response removerPorId(@PathParam("id") int id) {
-		int obj = 0;
+		boolean obj = false;
 		try {
 			obj = pedidoDao.excluir(id);
 		} catch (Exception e) {
