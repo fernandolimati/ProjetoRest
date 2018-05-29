@@ -22,7 +22,7 @@ public class Conexao {
     private static Connection conectar() throws Exception{
         try {
             Class.forName("org.postgresql.Driver");
-        return DriverManager.getConnection("jdbc:postgresql://fernandolimati.com.br:8080/clube201801","postgres","F#240924s");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistemataxi","postgres","F#240924s");
     
         }catch (ClassNotFoundException e) {
         	throw new Exception("Nao foi encontrado a biblioteca postgres.");

@@ -16,7 +16,11 @@ public class DataHelper {
 		this.data = data;
 	}
 	public DataHelper(String dataString) throws Exception {
-		this.data = new Date(formatador.parse(dataString).getTime());
+		if(dataString != null) {
+			this.data = new Date(formatador.parse(dataString).getTime());
+		}else {
+			this.data = null;
+		}
 	}
 
 	public Date getData() {
